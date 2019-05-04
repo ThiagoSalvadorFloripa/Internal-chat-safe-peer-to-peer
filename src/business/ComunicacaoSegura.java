@@ -15,6 +15,7 @@ import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.CertificateException;
+import java.util.Base64;
 import java.util.Set;
 
 import javax.crypto.KeyGenerator;
@@ -51,6 +52,7 @@ public class ComunicacaoSegura implements Serializable {
 
 		} catch (Exception e) {
 		}
+		System.out.println( "Chave criptografada com o algoritmo 'AES': \n"+Utils.toHex(aesKey.getEncoded()));
 		return aesKey;
 	}
 	
@@ -90,12 +92,13 @@ public class ComunicacaoSegura implements Serializable {
 		try {
 			IvParameterSpec ivSpec = new IvParameterSpec(iv);
 		
-			System.out.println("IV = " + Utils.toHex(iv));
+			System.out.println("IV gerado com o algoritmo PBKDF2: \n" + Utils.toHex(iv));
 			ivFinal = Utils.toHex(iv);
 
 		} catch (Exception e) {
 			e.getMessage();
 		}
+		
 		return iv;
 	}
 	
@@ -154,9 +157,11 @@ public class ComunicacaoSegura implements Serializable {
 			String keystoreFilename = keyChat.getEmpresa().getNome()+extensao;// nome arquivoEmpresa
 			String criptIndividual = new String(keyChat.getTrasmissor().getChaveCriptografica().toString());
 			char[] keyPass1 = criptIndividual.toCharArray();// chave criptografica alice
-			String IV = keyChat.getTrasmissor().getIV().toString();
-			obj.storeSecretKey(keystoreFilename, storePass, IV, keyPass1, ExValues.SampleAesKey);
+			String IV = new String(keyChat.getTrasmissor().getIV());
+					//Base64.getEncoder().encodeToString(keyChat.getTrasmissor().getIV());
+		
 			
+			obj.storeSecretKey(keystoreFilename, storePass, IV, keyPass1, ExValues.SampleAesKey);
 			ComunicacaoSegura.nomeKeystore = keyChat.getEmpresa().getNome()+extensao;
 
 			//printa na tela o IV
@@ -191,7 +196,8 @@ public class ComunicacaoSegura implements Serializable {
 	
 	public String decryptionMensagem(MensagemCriptografada mensagemCriptografadaEmissor, String ivEmissor){
 		CBCExampleKeyIVSecureRandom cbf = new CBCExampleKeyIVSecureRandom();
-		byte[] iv = ivEmissor.getBytes(Charset.forName("UTF-8"));
+		byte[] iv = ivEmissor.getBytes();
+		System.out.println(iv.length);
 		return cbf.decryption(mensagemCriptografadaEmissor, iv);
 		
 	}
@@ -203,7 +209,7 @@ public class ComunicacaoSegura implements Serializable {
 		System.out.println("Chave usada para cifragem da mensagem: \n"+chaveCriptograficaEmissor);
 		
 		//abrindo o keyTore para pegar o IV do trasmissor Salvado e printando na tela
-		System.out.println("IV do emissor recuperado do KeyStore: \n"+this.getIVdoKeyStore(nomeKeystore, receptor.getChaceKeytore().toCharArray()));
+		System.out.println("IV do emissor recuperado do KeyStore: \n"+ this.getIVdoKeyStore(nomeKeystore, receptor.getChaceKeytore().toCharArray()));
 		
 		
 		//printando mensagem cifrada

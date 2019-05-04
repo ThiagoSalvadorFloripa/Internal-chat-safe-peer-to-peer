@@ -18,8 +18,9 @@ import entity.MensagemCriptografada;
 import entity.Empresa;
 import entity.Funcionario;
 import security.KeyStoreCompany;
+import security.Utils;
 
-public class Apllicação {
+public class ApllicaÃ§Ã£o {
 
 	public static void main(String[] args){
 		
@@ -55,9 +56,9 @@ public class Apllicação {
 		
 		
 		/*Notifica conversa
-		 * ID do KeyChat é a concatenação da chave privada dos funcuinarios
+		 * ID do KeyChat Ã© a concatenaÃ§Ã£o da chave privada dos funcuinarios
 		 * A mensagem inicia vazia
-		 * É enviado também a empresa
+		 * Ã‰ enviado tambÃ©m a empresa
 		 * */
 		
 		//teste funcionario malicioso
@@ -68,9 +69,9 @@ public class Apllicação {
 
 		
 		
-		/*Envia keyChat para validação dos dados
+		/*Envia keyChat para validaÃ§Ã£o dos dados
 		 Verifica se os funcionarios existem na empresa
-		 Se existir entra no processo de geração de chaves
+		 Se existir entra no processo de geraÃ§Ã£o de chaves
 		 e recebe a chave da empresa que abre o keystore
 		*/
 		if(comunicacaoSegura.pertenceAempresa(keyChat)){
@@ -83,14 +84,14 @@ public class Apllicação {
 			
 			
 			
-			//gera chave criptográfica
+			//gera chave criptogrÃ¡fica
 			alice.setChaveCriptografica(comunicacaoSegura.geraChavecriptograficaAES());
 			
 			
 			
 			
 			//gera gerar IV em PBKDF2
-			alice.setIV(comunicacaoSegura.geraIVComPBKDF2(alice.getChavePrivada(), alice.getEmail()));
+			alice.setIV(comunicacaoSegura.geraIVComPBKDF2(alice.getChavePrivada(), alice.getId().toString()));
 			
 			
 			
@@ -102,7 +103,7 @@ public class Apllicação {
 			
 			
 			//mensagem a ser cifrada.
-			alice.setMensagem("“With the grace of God, "
+			alice.setMensagem("â€œWith the grace of God, "
 					+ "we are always better at "
 					+ "everything with joy, love "
 					+ "and happiness, contributing "
@@ -111,10 +112,24 @@ public class Apllicação {
 			
 			
 			
+			
+			//Imprimi mensagem original
+			System.out.println("Mensagem Origial: \n"+alice.getMensagem());
+			
+			
+			
+			
+			
 			//cifra a mensagem usando a chaveCriptografica e o IV
 			MensagemCriptografada mensagemCriptografada = new MensagemCriptografada();
 			mensagemCriptografada = comunicacaoSegura.encryptionMensagem(alice.getMensagem(), alice.getChaveCriptografica(), alice.getIV()); 
 				
+			
+			
+			
+			//Imprimi mensagem cifrada
+			System.out.println("Mensagem criptografada com algoritmo 'AES/CBC/PKCS7Padding': \n"+ Utils.toHex(mensagemCriptografada.getMensagem()));
+	
 			
 			
 			//valida novamente se os funcionarios pertencem a empresa

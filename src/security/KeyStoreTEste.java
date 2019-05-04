@@ -69,12 +69,5 @@ public class KeyStoreTEste {
 	    FileOutputStream fos = new java.io.FileOutputStream(keyStoreLocation);
 	    ks.store(fos, keyStorePassword.toCharArray());
 	  }
-	  public static void main(String[] args) throws Exception {
-		  
-	    final String  keyStoreFile = "./codiceinsicuro.keystore";
-	    KeyStore keyStore = createKeyStore(keyStoreFile, "test123");
-	    setKey("test", "leggi questo blog ogni giorno", keyStoreFile,  "test123");
-	    System.out.println("Found Key: " + getKey("test", keyStoreFile,  "test123" ));
-	  }
 	
 }

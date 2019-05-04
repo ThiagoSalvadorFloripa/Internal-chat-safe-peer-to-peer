@@ -59,29 +59,4 @@ public class PBKDF2Util implements Serializable {
         sr.nextBytes(salt);
         return Hex.encodeHexString(salt);
     }
-
-    public static void main(String args[]) throws NoSuchAlgorithmException {
-        PBKDF2Util obj = new PBKDF2Util();        
-        
-        String senha;
-        String salt;
-        int it = 10000;
-        
-        Scanner input = new Scanner(System.in);
-        System.out.println("Digite a senha: ");
-        senha = input.nextLine();
-
-        //senha = "123456789";
-        salt = obj.getSalt();
-        
-        System.out.println("Senha original = " + senha);
-        System.out.println("Sal gerado = " + salt);
-        System.out.println("Numero de iteracoes = " + it);
-        
-        //String chaveDerivada = generateDerivedKey(senha, salt, it);
-       
-      //  System.out.println("Chave derivada da senha = " + chaveDerivada );
-        
-    }
-
 }

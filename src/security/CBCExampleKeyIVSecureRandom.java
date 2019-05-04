@@ -1,5 +1,6 @@
 package security;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -37,19 +38,19 @@ public class CBCExampleKeyIVSecureRandom {
 		// Incluido: Instanciar um novo Security provider
 		int addProvider = Security.addProvider(new BouncyCastleFipsProvider());
 		if (Security.getProvider("BCFIPS") == null) {
-			System.out.println("Bouncy Castle provider NAO disponivel");
+			//System.out.println("Bouncy Castle provider NAO disponivel");
 		} else {
-			System.out.println("Bouncy Castle provider esta disponivel");
+			//System.out.println("Bouncy Castle provider esta disponivel");
 		}
 		
 		try {
 			//Security.addProvider(new BouncyCastleProvider());
 			// Instanciando cipher
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding", "BCFIPS");
-			System.out.println("input : " + Utils.toHex(input));
+			//System.out.println("input : " + Utils.toHex(input));
 
 			IvParameterSpec ivSpec = new IvParameterSpec(iv);
-			System.out.println("IV = " + Utils.toHex(iv));
+			//System.out.println("IV = " + Utils.toHex(iv));
 
 			// encryption pass
 			cipher.init(Cipher.ENCRYPT_MODE, aesKey, ivSpec);
@@ -58,7 +59,7 @@ public class CBCExampleKeyIVSecureRandom {
 			int ctLength = cipher.update(iv, 0, iv.length, cipherText, 0);
 			ctLength += cipher.update(input, 0, input.length, cipherText, ctLength);
 			ctLength += cipher.doFinal(cipherText, ctLength);
-			System.out.println("cipher: " + Utils.toHex(cipherText, ctLength) + " bytes: " + ctLength);
+			//System.out.println("cipher: " + Utils.toHex(cipherText, ctLength) + " bytes: " + ctLength);
 			
 			msCrip.setAesKey(aesKey);
 			msCrip.setCipherText(cipherText);
@@ -92,10 +93,16 @@ public class CBCExampleKeyIVSecureRandom {
 
 			// remove the iv from the start of the message
 			byte[] plainText = new byte[bufLength - iv.length];
-			System.arraycopy(buf, iv.length, plainText, 0, plainText.length);
+		//	System.arraycopy(buf, iv.length, plainText, 0, plainText.length);
 
 			//System.out.println("plain : " + Utils.toHex(plainText, plainText.length) + " bytes: " + plainText.length);
-			texto = new String(msCrip.getMensagem());
+			try {
+				texto = new String(msCrip.getMensagem(), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			//System.out.println(texto);
 			
 
@@ -135,7 +142,7 @@ public class CBCExampleKeyIVSecureRandom {
   
         
         // Incluido: Gera uma chave AES
-        System.out.print("Gerando chave AES -> ");
+       // System.out.print("Gerando chave AES -> ");
         KeyGenerator sKenGen = KeyGenerator.getInstance("AES");
         Key aesKey = sKenGen.generateKey();
         //System.out.println("Chave AES = " + Utils.toHex(aesKey.getEncoded()));

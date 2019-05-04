@@ -1,9 +1,11 @@
 package entity;
 
+import java.io.Serializable;
 import java.security.Key;
 
-public class MensagemCriptografada {
+public class MensagemCriptografada implements Serializable {
 	
+	private static final long serialVersionUID = -3827545072264784658L;
 	private byte[] mensagem;
 	private Key aesKey;
 	private byte[] cipherText;
