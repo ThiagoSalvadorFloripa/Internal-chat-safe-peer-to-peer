@@ -15,6 +15,7 @@ import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.CertificateException;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Set;
 
@@ -53,6 +54,8 @@ public class ComunicacaoSegura implements Serializable {
 		} catch (Exception e) {
 		}
 		System.out.println( "Chave criptografada com o algoritmo 'AES': \n"+Utils.toHex(aesKey.getEncoded()));
+		System.out.println("\n");
+		System.out.println("\n");
 		return aesKey;
 	}
 	
@@ -93,12 +96,13 @@ public class ComunicacaoSegura implements Serializable {
 			IvParameterSpec ivSpec = new IvParameterSpec(iv);
 		
 			System.out.println("IV gerado com o algoritmo PBKDF2: \n" + Utils.toHex(iv));
+			System.out.println("\n");
+			System.out.println("\n");
 			ivFinal = Utils.toHex(iv);
 
 		} catch (Exception e) {
 			e.getMessage();
 		}
-		
 		return iv;
 	}
 	
@@ -157,11 +161,9 @@ public class ComunicacaoSegura implements Serializable {
 			String keystoreFilename = keyChat.getEmpresa().getNome()+extensao;// nome arquivoEmpresa
 			String criptIndividual = new String(keyChat.getTrasmissor().getChaveCriptografica().toString());
 			char[] keyPass1 = criptIndividual.toCharArray();// chave criptografica alice
-			String IV = new String(keyChat.getTrasmissor().getIV());
-					//Base64.getEncoder().encodeToString(keyChat.getTrasmissor().getIV());
-		
-			
+			String IV = new String(keyChat.getTrasmissor().getIV()); // pega IV do ALICE
 			obj.storeSecretKey(keystoreFilename, storePass, IV, keyPass1, ExValues.SampleAesKey);
+			
 			ComunicacaoSegura.nomeKeystore = keyChat.getEmpresa().getNome()+extensao;
 
 			//printa na tela o IV
@@ -197,7 +199,6 @@ public class ComunicacaoSegura implements Serializable {
 	public String decryptionMensagem(MensagemCriptografada mensagemCriptografadaEmissor, String ivEmissor){
 		CBCExampleKeyIVSecureRandom cbf = new CBCExampleKeyIVSecureRandom();
 		byte[] iv = ivEmissor.getBytes();
-		System.out.println(iv.length);
 		return cbf.decryption(mensagemCriptografadaEmissor, iv);
 		
 	}
@@ -207,16 +208,48 @@ public class ComunicacaoSegura implements Serializable {
 		
 		// chave que foi criptrograda a mensage
 		System.out.println("Chave usada para cifragem da mensagem: \n"+chaveCriptograficaEmissor);
-		
+		System.out.println("\n");
+		System.out.println("\n");
 		//abrindo o keyTore para pegar o IV do trasmissor Salvado e printando na tela
 		System.out.println("IV do emissor recuperado do KeyStore: \n"+ this.getIVdoKeyStore(nomeKeystore, receptor.getChaceKeytore().toCharArray()));
-		
+		System.out.println("\n");
+		System.out.println("\n");
 		
 		//printando mensagem cifrada
-		System.out.println("Mensagem cifrada: \n"+mensagemCriptografadaEmissor.getMensagem());
-		
+		System.out.println("Mensagem cifrada: \n"+Utils.toHex(mensagemCriptografadaEmissor.getMensagem()));
+		System.out.println("\n");
+		System.out.println("\n");
 		//printando mensagem descifrada
 		System.out.println("Mensagem real descifrada: \n"+this.decryptionMensagem(mensagemCriptografadaEmissor, this.getIVdoKeyStore(nomeKeystore, receptor.getChaceKeytore().toCharArray())));
-
+		
+		
+		System.out.println("\n");
+		System.out.println("\n");
+	
+		System.out.println("███████▓█████▓▓╬╬╬╬╬╬╬╬▓███▓╬╬╬╬╬╬╬▓╬╬▓█ \r\n" + 
+				"████▓▓▓▓╬╬▓█████╬╬╬╬╬╬███▓╬╬╬╬╬╬╬╬╬╬╬╬╬█ \r\n" + 
+				"███▓▓▓▓╬╬╬╬╬╬▓██╬╬╬╬╬╬▓▓╬╬╬╬╬╬╬╬╬╬╬╬╬╬▓█ \r\n" + 
+				"████▓▓▓╬╬╬╬╬╬╬▓█▓╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬▓█ \r\n" + 
+				"███▓█▓███████▓▓███▓╬╬╬╬╬╬▓███████▓╬╬╬╬▓█ \r\n" + 
+				"████████████████▓█▓╬╬╬╬╬▓▓▓▓▓▓▓▓╬╬╬╬╬╬╬█ \r\n" + 
+				"███▓▓▓▓▓▓▓╬╬▓▓▓▓▓█▓╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬▓█ \r\n" + 
+				"████▓▓▓╬╬╬╬▓▓▓▓▓▓█▓╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬▓█ \r\n" + 
+				"███▓█▓▓▓▓▓▓▓▓▓▓▓▓▓▓╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬▓█ \r\n" + 
+				"█████▓▓▓▓▓▓▓▓█▓▓▓█▓╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬▓█ \r\n" + 
+				"█████▓▓▓▓▓▓▓██▓▓▓█▓╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬██ \r\n" + 
+				"█████▓▓▓▓▓████▓▓▓█▓╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬██ \r\n" + 
+				"████▓█▓▓▓▓██▓▓▓▓██╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬██ \r\n" + 
+				"████▓▓███▓▓▓▓▓▓▓██▓╬╬╬╬╬╬╬╬╬╬╬╬█▓╬▓╬╬▓██ \r\n" + 
+				"█████▓███▓▓▓▓▓▓▓▓████▓▓╬╬╬╬╬╬╬█▓╬╬╬╬╬▓██ \r\n" + 
+				"█████▓▓█▓███▓▓▓████╬▓█▓▓╬╬╬▓▓█▓╬╬╬╬╬╬███ \r\n" + 
+				"██████▓██▓███████▓╬╬╬▓▓╬▓▓██▓╬╬╬╬╬╬╬▓███ \r\n" + 
+				"███████▓██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓╬╬╬╬╬╬╬╬╬╬╬████ \r\n" + 
+				"███████▓▓██▓▓▓▓▓╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬▓████ \r\n" + 
+				"████████▓▓▓█████▓▓╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬▓█████ \r\n" + 
+				"█████████▓▓▓█▓▓▓▓▓███▓╬╬╬╬╬╬╬╬╬╬╬▓██████ \r\n" + 
+				"██████████▓▓▓█▓▓▓╬▓██╬╬╬╬╬╬╬╬╬╬╬▓███████ \r\n" + 
+				"███████████▓▓█▓▓▓▓███▓╬╬╬╬╬╬╬╬╬▓████████ \r\n" + 
+				"██████████████▓▓▓███▓▓╬╬╬╬╬╬╬╬██████████ \r\n" + 
+				"███████████████▓▓▓██▓▓╬╬╬╬╬╬▓███████████");
 	}
 }

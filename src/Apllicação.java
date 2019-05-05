@@ -1,23 +1,11 @@
-import java.io.IOException;
-import java.math.BigInteger;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.cert.CertificateException;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.ShortBufferException;
-
 import business.ComunicacaoSegura;
-import entity.KeyChat;
-import entity.MensagemCriptografada;
 import entity.Empresa;
 import entity.Funcionario;
-import security.KeyStoreCompany;
+import entity.KeyChat;
+import entity.MensagemCriptografada;
 import security.Utils;
 
 public class Apllicação {
@@ -25,7 +13,7 @@ public class Apllicação {
 	public static void main(String[] args){
 		
 		ComunicacaoSegura comunicacaoSegura = new ComunicacaoSegura();
-		
+				
 		//cria empresa
 		Empresa empresa = new Empresa(1, "Tecnologia", "tec@@tecnologia.com");
 		empresa.setChave(comunicacaoSegura.geraHash(empresa.getNome()+empresa.getEmail()));
@@ -115,7 +103,8 @@ public class Apllicação {
 			
 			//Imprimi mensagem original
 			System.out.println("Mensagem Origial: \n"+alice.getMensagem());
-			
+			System.out.println("\n");
+			System.out.println("\n");
 			
 			
 			
@@ -129,7 +118,8 @@ public class Apllicação {
 			
 			//Imprimi mensagem cifrada
 			System.out.println("Mensagem criptografada com algoritmo 'AES/CBC/PKCS7Padding': \n"+ Utils.toHex(mensagemCriptografada.getMensagem()));
-	
+			System.out.println("\n");
+			System.out.println("\n");
 			
 			
 			//valida novamente se os funcionarios pertencem a empresa

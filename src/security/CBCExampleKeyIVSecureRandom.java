@@ -28,7 +28,7 @@ import entity.MensagemCriptografada;
  * initialization vector. Modificado para usar o AES.
  */
 public class CBCExampleKeyIVSecureRandom {
-	
+	static private int iv =Utils.exemplo;
 	public MensagemCriptografada encryption(String mensagem,  Key aesKey, byte[] iv){
 		
 		MensagemCriptografada msCrip = new MensagemCriptografada();
@@ -81,6 +81,14 @@ public class CBCExampleKeyIVSecureRandom {
 	public String decryption( MensagemCriptografada msCrip,  byte[] iv) {
 		String texto = "";
 		try {
+			
+//			System.arraycopy(buf, iv.length, plainText, 0, plainText.length);
+			//System.out.println("plain : " + Utils.toHex(plainText, plainText.length) + " bytes: " + plainText.length);
+			/*Utils.toHex(plainText,*/
+			iv= new byte[CBCExampleKeyIVSecureRandom.iv];
+//			System.arraycopy(buf, iv.length, plainText, 0, plainText.length);
+					//System.out.println("plain : " + Utils.toHex(plainText, plainText.length) + " bytes: " + plainText.length);
+			
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding", "BCFIPS");
 			IvParameterSpec ivSpec = new IvParameterSpec(iv);
 			

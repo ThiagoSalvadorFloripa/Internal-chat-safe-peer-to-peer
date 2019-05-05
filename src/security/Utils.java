@@ -17,8 +17,8 @@ public class Utils
 {
     
     private static String	digits = "0123456789abcdef";
-
-    
+   
+    public static int exemplo = 16;
     /**
      * Return length many bytes of the passed in byte array as a hex string.
      * 
@@ -165,4 +165,5 @@ public class Utils
         
         return bytes;
     }
+    
 }
